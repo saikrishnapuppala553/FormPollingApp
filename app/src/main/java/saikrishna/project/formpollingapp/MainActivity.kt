@@ -60,7 +60,7 @@ fun LoadingScreenCheck(isUserLoggedIn: (value: Int) -> Unit) {
 
     LaunchedEffect(Unit) {
         delay(3000)
-//        splashValue = false
+        splashValue = false
     }
 
     if (splashValue) {
