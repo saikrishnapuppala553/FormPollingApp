@@ -1,16 +1,14 @@
-import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
 android {
-    namespace = "saikrishna.project.formpollingapp"
+    namespace = "saikrishnas3495275.pollingapp.madproject"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "saikrishna.project.formpollingapp"
+        applicationId = "saikrishnas3495275.pollingapp.madproject"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

@@ -1,6 +1,5 @@
-package saikrishna.project.formpollingapp.ui.theme
+package saikrishnas3495275.pollingapp.madproject.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

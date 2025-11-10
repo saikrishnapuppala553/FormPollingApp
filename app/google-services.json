@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "159652262647",
+    "project_id": "pollingapp-f5f35",
+    "storage_bucket": "pollingapp-f5f35.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159652262647:android:1145dfd61e522f3f17d9f2",
+        "android_client_info": {
+          "package_name": "saikrishnas3495275.pollingapp.madproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0ZoID1CjUTreuB7E9z6g6U0ymKboWgBc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
