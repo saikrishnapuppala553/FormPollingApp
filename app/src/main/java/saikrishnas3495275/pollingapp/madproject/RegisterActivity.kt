@@ -104,7 +104,6 @@ fun OptInScreen() {
 
                 }
 
-
             }
 
             // Login Form Section
