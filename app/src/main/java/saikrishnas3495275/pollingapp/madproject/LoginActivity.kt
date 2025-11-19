@@ -174,6 +174,9 @@ fun GoInScreen() {
                     Button(
                         onClick = {
 
+                            context.startActivity(Intent(context, HomeActivity::class.java))
+                            (context as Activity).finish()
+
 
                         },
 
