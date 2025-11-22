@@ -4,6 +4,7 @@ package saikrishnas3495275.pollingapp.madproject
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -41,8 +42,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.google.firebase.database.FirebaseDatabase
 import kotlin.jvm.java
 
 
@@ -53,6 +56,12 @@ class LoginActivity : ComponentActivity() {
             GoInScreen()
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GoInScreenPreview() {
+    GoInScreen()
 }
 
 
@@ -174,8 +183,35 @@ fun GoInScreen() {
                     Button(
                         onClick = {
 
-                            context.startActivity(Intent(context, HomeActivity::class.java))
-                            (context as Activity).finish()
+                            val database = FirebaseDatabase.getInstance()
+                            val databaseReference = database.reference
+
+                            val sanitizedEmail = email.replace(".", ",")
+
+                            databaseReference.child("UserAccounts").child(sanitizedEmail).get()
+                                .addOnSuccessListener { snapshot ->
+                                    if (snapshot.exists()) {
+                                        val chefData = snapshot.getValue(UserData::class.java)
+                                        chefData?.let {
+
+                                            if (password == it.password) {
+
+                                                Toast.makeText(context, "Login Successfull", Toast.LENGTH_SHORT).show()
+
+                                                context.startActivity(Intent(context, HomeActivity::class.java))
+                                                (context as Activity).finish()
+                                            }
+                                            else{
+                                                Toast.makeText(context,"Incorrect Credentials",Toast.LENGTH_SHORT).show()
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(context,"No User Found",Toast.LENGTH_SHORT).show()
+                                    }
+                                }.addOnFailureListener { exception ->
+                                    println("Error retrieving data: ${exception.message}")
+                                }
+
 
 
                         },
@@ -230,3 +266,12 @@ fun GoInScreen() {
         }
     }
 }
+
+
+data class UserData
+    (
+    var name: String = "",
+    var role: String ="",
+    var email: String ="",
+    var password: String ="",
+)

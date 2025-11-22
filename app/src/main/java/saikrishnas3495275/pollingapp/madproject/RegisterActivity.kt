@@ -2,8 +2,11 @@ package saikrishnas3495275.pollingapp.madproject
 
 
 import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -43,9 +46,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlin.jvm.java
+import com.google.firebase.database.FirebaseDatabase
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,10 +61,17 @@ class RegisterActivity : ComponentActivity() {
 }
 
 
+@Preview(showBackground = true)
+@Composable
+fun OptInScreenPreview() {
+    OptInScreen()
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OptInScreen() {
-    val context = LocalContext.current
+    val context = LocalContext.current.findActivity()
 
     var selectedRole by remember { mutableStateOf("Student") }
 
@@ -267,9 +278,48 @@ fun OptInScreen() {
 
 
 
-                    // Login Button
+                    // Register Button
                     Button(
                         onClick = {
+
+
+                            val userData = UserData(
+                                name = FullName,
+                                email = email,
+                                role = selectedRole,
+                                password = password
+                            )
+
+
+                            val db = FirebaseDatabase.getInstance()
+                            val ref = db.getReference("SignedUpUsers")
+                            ref.child(userData.email.replace(".", ",")).setValue(userData)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Toast.makeText(context, "Registration Successful", Toast.LENGTH_SHORT).show()
+
+                                        context!!.startActivity(
+                                            Intent(
+                                                context,
+                                                LoginActivity::class.java
+                                            )
+                                        )
+                                        (context).finish()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "User Registration Failed: ${task.exception?.message}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                                .addOnFailureListener { exception ->
+                                    Toast.makeText(
+                                        context,
+                                        "User Registration Failed: ${exception.message}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
 
                         },
                         modifier = Modifier
@@ -300,8 +350,8 @@ fun OptInScreen() {
                             text = "Login",
                             color = Color(0xFF6200EE), // Purple color for link
                             modifier = Modifier.clickable {
-                                context.startActivity(Intent(context, LoginActivity::class.java))
-                                (context as Activity).finish()
+                                context!!.startActivity(Intent(context, LoginActivity::class.java))
+                                (context).finish()
                             }
                         )
                     }
@@ -309,4 +359,10 @@ fun OptInScreen() {
             }
         }
     }
+}
+
+fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }

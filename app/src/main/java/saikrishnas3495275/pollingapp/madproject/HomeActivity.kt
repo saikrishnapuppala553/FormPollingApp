@@ -20,11 +20,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import saikrishnas3495275.pollingapp.madproject.teacher.CreatePollScreen
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +37,13 @@ class HomeActivity : ComponentActivity() {
     }
 }
 
+
+
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen()
+}
 
 @Composable
 fun HomeScreen() {
@@ -58,12 +67,7 @@ sealed class BottomNavItem(val route: String, val title: String, val icon: Image
 }
 
 
-@Composable
-fun AddPoll() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Add Poll Screen")
-    }
-}
+
 
 @Composable
 fun ManagePoll() {
@@ -86,7 +90,7 @@ fun NavigationGraph(navController: NavHostController) {
         navController = navController,
         startDestination = BottomNavItem.AddPollV.route
     ) {
-        composable(BottomNavItem.AddPollV.route) { AddPoll() }
+        composable(BottomNavItem.AddPollV.route) { CreatePollScreen() }
         composable(BottomNavItem.MPollV.route) { ManagePoll() }
         composable(BottomNavItem.Profile.route) { ProfileScreen() }
     }
