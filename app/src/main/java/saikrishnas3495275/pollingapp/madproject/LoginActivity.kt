@@ -92,7 +92,7 @@ fun GoInScreen() {
                 ) {
 
                     Image(
-                        painter = painterResource(id = R.drawable.ic_polling), // Replace with your image
+                        painter = painterResource(id = R.drawable.ic_polling), 
                         contentDescription = "Polling Image",
                         modifier = Modifier
                             .size(150.dp)
@@ -188,7 +188,7 @@ fun GoInScreen() {
 
                             val sanitizedEmail = email.replace(".", ",")
 
-                            databaseReference.child("UserAccounts").child(sanitizedEmail).get()
+                            databaseReference.child("SignedUpUsers").child(sanitizedEmail).get()
                                 .addOnSuccessListener { snapshot ->
                                     if (snapshot.exists()) {
                                         val chefData = snapshot.getValue(UserData::class.java)
