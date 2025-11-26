@@ -46,6 +46,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.database.FirebaseDatabase
+import saikrishnas3495275.pollingapp.madproject.ui.theme.RoyalBlue
+import saikrishnas3495275.pollingapp.madproject.ui.theme.Yellow
 import kotlin.jvm.java
 
 
@@ -84,7 +86,7 @@ fun GoInScreen() {
                     .fillMaxWidth()
                     .weight(1f)
                     .clip(RoundedCornerShape(bottomEnd = 32.dp, bottomStart = 32.dp))
-                    .background(Color(0xFF6200EE))
+                    .background(RoyalBlue)
             ) {
                 Column(
                     modifier = Modifier.align(Alignment.Center),
@@ -221,7 +223,7 @@ fun GoInScreen() {
                             .fillMaxWidth()
                             .height(50.dp),
                         shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFBC02D)) // Yellow button
+                        colors = ButtonDefaults.buttonColors(containerColor = Yellow) // Yellow button
                     ) {
                         Text(text = "Log In", color = Color.Black)
                     }
