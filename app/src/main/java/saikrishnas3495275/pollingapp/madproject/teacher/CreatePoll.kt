@@ -1,12 +1,10 @@
 package saikrishnas3495275.pollingapp.madproject.teacher
 
-import androidx.activity.compose.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,7 +29,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
@@ -42,12 +39,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import saikrishnas3495275.pollingapp.madproject.ui.theme.RoyalBlue
 import saikrishnas3495275.pollingapp.madproject.ui.theme.Yellow
@@ -268,7 +264,28 @@ fun Dropdown() {
     var expanded by remember { mutableStateOf(false) }
     var selectedOption by remember { mutableStateOf("Select Category") }
 
-    val options = listOf("Option 1", "Option 2", "Option 3")
+    val options = listOf(
+        "Course Feedback",
+        "Module Feedback",
+        "Lecture Understanding",
+        "Assignment Help",
+        "Exam Preparation",
+        "Project Topics",
+        "Class Scheduling",
+        "Lab Session Feedback",
+        "Workshop Feedback",
+        "Upcoming Tests",
+        "Study Resources",
+        "Career Guidance",
+        "Placement Information",
+        "Student Wellbeing",
+        "Group Activities",
+        "Research Interests",
+        "Feedback on Teaching Style",
+        "Online/Offline Class Preference",
+        "Event Participation",
+        "General Announcements"
+    )
 
     ExposedDropdownMenuBox(
         expanded = expanded,

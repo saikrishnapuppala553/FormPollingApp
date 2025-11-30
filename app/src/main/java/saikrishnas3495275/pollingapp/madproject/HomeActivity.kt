@@ -22,11 +22,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import saikrishnas3495275.pollingapp.madproject.teacher.CreatePollScreen
+import saikrishnas3495275.pollingapp.madproject.teacher.ManagePoll
+import saikrishnas3495275.pollingapp.madproject.teacher.PollDetailsScreen
+import saikrishnas3495275.pollingapp.madproject.teacher.generateDummyPolls
 
 class HomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,13 +75,6 @@ sealed class BottomNavItem(val route: String, val title: String, val icon: Image
 
 
 @Composable
-fun ManagePoll() {
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Manage Poll")
-    }
-}
-
-@Composable
 fun ProfileScreen() {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text("Profile Screen")
@@ -91,8 +89,17 @@ fun NavigationGraph(navController: NavHostController) {
         startDestination = BottomNavItem.AddPollV.route
     ) {
         composable(BottomNavItem.AddPollV.route) { CreatePollScreen() }
-        composable(BottomNavItem.MPollV.route) { ManagePoll() }
+        composable(BottomNavItem.MPollV.route) { ManagePoll(navController = navController) }
         composable(BottomNavItem.Profile.route) { ProfileScreen() }
+
+        composable(
+            route = "poll_details/{pollId}",
+            arguments = listOf(navArgument("pollId") { type = NavType.IntType })
+        ) {
+            val pollId = it.arguments?.getInt("pollId") ?: 0
+            val poll = generateDummyPolls().first { p -> p.id == pollId }
+            PollDetailsScreen(poll, navController)
+        }
     }
 }
 

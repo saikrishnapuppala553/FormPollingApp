@@ -53,6 +53,9 @@ class MainActivity : ComponentActivity() {
     private fun isUserLoggedIn(value: Int) {
 
         when (value) {
+            1->{
+                gotoHomeActivity(this)
+            }
             2 -> {
                 gotoSignInActivity(this)
             }
@@ -65,6 +68,8 @@ class MainActivity : ComponentActivity() {
 fun LoadingScreenCheck(isUserLoggedIn: (value: Int) -> Unit) {
     var splashValue by remember { mutableStateOf(true) }
 
+    val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         delay(3000)
         splashValue = false
@@ -73,7 +78,13 @@ fun LoadingScreenCheck(isUserLoggedIn: (value: Int) -> Unit) {
     if (splashValue) {
         OpenPollingStartScreen()
     } else {
-        isUserLoggedIn.invoke(2)
+
+        if(UserPrefs.checkLoginStatus(context = context))
+        {
+            isUserLoggedIn.invoke(1)
+        }else{
+            isUserLoggedIn.invoke(2)
+        }
     }
 }
 
@@ -174,5 +185,10 @@ fun LoadingScreenPreview() {
 
 fun gotoSignInActivity(context: Activity) {
     context.startActivity(Intent(context, LoginActivity::class.java))
+    context.finish()
+}
+
+fun gotoHomeActivity(context: Activity) {
+    context.startActivity(Intent(context, HomeActivity::class.java))
     context.finish()
 }

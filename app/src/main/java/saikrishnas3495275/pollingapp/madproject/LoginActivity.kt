@@ -48,7 +48,6 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.database.FirebaseDatabase
 import saikrishnas3495275.pollingapp.madproject.ui.theme.RoyalBlue
 import saikrishnas3495275.pollingapp.madproject.ui.theme.Yellow
-import kotlin.jvm.java
 
 
 class LoginActivity : ComponentActivity() {
@@ -94,7 +93,7 @@ fun GoInScreen() {
                 ) {
 
                     Image(
-                        painter = painterResource(id = R.drawable.ic_polling), 
+                        painter = painterResource(id = R.drawable.ic_polling),
                         contentDescription = "Polling Image",
                         modifier = Modifier
                             .size(150.dp)
@@ -198,22 +197,43 @@ fun GoInScreen() {
 
                                             if (password == it.password) {
 
-                                                Toast.makeText(context, "Login Successfull", Toast.LENGTH_SHORT).show()
 
-                                                context.startActivity(Intent(context, HomeActivity::class.java))
+                                                UserPrefs.markLoginStatus(context = context, true)
+                                                UserPrefs.saveEmail(
+                                                    context,
+                                                    email = email
+                                                )
+                                                UserPrefs.saveName(context, it.name)
+
+
+                                                Toast.makeText(
+                                                    context,
+                                                    "Login Successfull",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+
+                                                context.startActivity(
+                                                    Intent(
+                                                        context,
+                                                        HomeActivity::class.java
+                                                    )
+                                                )
                                                 (context as Activity).finish()
-                                            }
-                                            else{
-                                                Toast.makeText(context,"Incorrect Credentials",Toast.LENGTH_SHORT).show()
+                                            } else {
+                                                Toast.makeText(
+                                                    context,
+                                                    "Incorrect Credentials",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
                                             }
                                         }
                                     } else {
-                                        Toast.makeText(context,"No User Found",Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "No User Found", Toast.LENGTH_SHORT)
+                                            .show()
                                     }
                                 }.addOnFailureListener { exception ->
                                     println("Error retrieving data: ${exception.message}")
                                 }
-
 
 
                         },
@@ -233,17 +253,7 @@ fun GoInScreen() {
                     // Or Divider
                     Text("Or", color = Color.Gray)
 
-                    Spacer(modifier = Modifier.height(16.dp))
 
-                    // Social Login Row
-//                    Row(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalArrangement = Arrangement.SpaceEvenly
-//                    ) {
-//                        SocialLoginIcon(painterResource(id = R.drawable.baseline_visibility_off_24)) // Replace with Google icon
-//                        SocialLoginIcon(painterResource(id = R.drawable.baseline_lock_24))  // Replace with Apple icon
-//                        SocialLoginIcon(painterResource(id = R.drawable.baseline_check_circle_24)) // Replace with Facebook icon
-//                    }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -273,7 +283,7 @@ fun GoInScreen() {
 data class UserData
     (
     var name: String = "",
-    var role: String ="",
-    var email: String ="",
-    var password: String ="",
+    var role: String = "",
+    var email: String = "",
+    var password: String = "",
 )
