@@ -54,7 +54,11 @@ class MainActivity : ComponentActivity() {
 
         when (value) {
             1->{
+
                 gotoHomeActivity(this)
+            }
+            3->{
+                gotoSignInActivity(this)
             }
             2 -> {
                 gotoSignInActivity(this)
@@ -81,7 +85,16 @@ fun LoadingScreenCheck(isUserLoggedIn: (value: Int) -> Unit) {
 
         if(UserPrefs.checkLoginStatus(context = context))
         {
-            isUserLoggedIn.invoke(1)
+            val role = UserPrefs.getRole(context)
+
+            if(role=="Teacher")
+            {
+                isUserLoggedIn.invoke(1)
+
+            }else{
+                isUserLoggedIn.invoke(3)
+
+            }
         }else{
             isUserLoggedIn.invoke(2)
         }
@@ -189,6 +202,11 @@ fun gotoSignInActivity(context: Activity) {
 }
 
 fun gotoHomeActivity(context: Activity) {
+    context.startActivity(Intent(context, HomeActivity::class.java))
+    context.finish()
+}
+
+fun gotoStudentHomeActivity(context: Activity) {
     context.startActivity(Intent(context, HomeActivity::class.java))
     context.finish()
 }

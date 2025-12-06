@@ -46,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.firebase.database.FirebaseDatabase
+import saikrishnas3495275.pollingapp.madproject.student.StudentActivity
 import saikrishnas3495275.pollingapp.madproject.ui.theme.RoyalBlue
 import saikrishnas3495275.pollingapp.madproject.ui.theme.Yellow
 
@@ -192,33 +193,32 @@ fun GoInScreen() {
                             databaseReference.child("SignedUpUsers").child(sanitizedEmail).get()
                                 .addOnSuccessListener { snapshot ->
                                     if (snapshot.exists()) {
-                                        val chefData = snapshot.getValue(UserData::class.java)
-                                        chefData?.let {
+                                        val userData = snapshot.getValue(UserData::class.java)
+                                        userData?.let {
 
                                             if (password == it.password) {
-
-
                                                 UserPrefs.markLoginStatus(context = context, true)
-                                                UserPrefs.saveEmail(
-                                                    context,
-                                                    email = email
-                                                )
+                                                UserPrefs.saveEmail(context, email = email)
                                                 UserPrefs.saveName(context, it.name)
-
+                                                UserPrefs.saveRole(context, it.role)
 
                                                 Toast.makeText(
                                                     context,
-                                                    "Login Successfull",
+                                                    "Login Successful",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
 
-                                                context.startActivity(
-                                                    Intent(
-                                                        context,
-                                                        HomeActivity::class.java
-                                                    )
-                                                )
+                                                val intent = when (it.role) {
+                                                    "Teacher" -> Intent(context, HomeActivity::class.java)
+                                                    "Student" -> Intent(context, StudentActivity::class.java)
+                                                    else -> {
+                                                        Toast.makeText(context, "Invalid Role", Toast.LENGTH_SHORT).show()
+                                                        return@let
+                                                    }
+                                                }
+                                                context.startActivity(intent)
                                                 (context as Activity).finish()
+
                                             } else {
                                                 Toast.makeText(
                                                     context,

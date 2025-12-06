@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,44 +29,45 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import kotlin.random.Random
 
-
+// This preview uses the Poll data class defined in CreatePoll.kt
 @Preview(showBackground = true)
 @Composable
 fun PollDetailsScreenPreview() {
 
     val pollData = Poll(
-        id = 1,
-        question = "What is your opinion on topic 1?",
+        id = "1",
+        name = "What is your opinion on topic 1?",
         category = listOf("General", "Study", "Sports", "Technology").random(),
-        postedDate = "2025-11-30",
-        endDate = "2025-12-${10}",
-        options = listOf(
-            PollOption("Option A", Random.nextInt(10, 200)),
-            PollOption("Option B", Random.nextInt(10, 200)),
-            PollOption("Option C", Random.nextInt(10, 200)),
-            PollOption("Option D", Random.nextInt(10, 200)),
+        createdDate = "2025-11-30",
+        endDate = "2025-12-10",
+        options = listOf("Option A", "Option B", "Option C", "Option D"),
+        votes = mapOf(
+            "Option A" to Random.nextInt(10, 200),
+            "Option B" to Random.nextInt(10, 200),
+            "Option C" to Random.nextInt(10, 200),
+            "Option D" to Random.nextInt(10, 200)
         )
     )
 
-    PollDetailsScreen(pollData,navController = NavHostController(LocalContext.current))
+    ViewPollDetailsScreen(pollData, navController = rememberNavController())
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PollDetailsScreen(poll: Poll, navController: NavController) {
+fun ViewPollDetailsScreen(poll: Poll, navController: NavController) {
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Poll Details") },
+                title = { Text("Poll Details1") },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFF303F9F)),
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
-                            Icons.Default.ArrowBack,
+                            Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null,
                             tint = Color.White
                         )
@@ -83,14 +84,14 @@ fun PollDetailsScreen(poll: Poll, navController: NavController) {
         ) {
 
             Text(
-                poll.question,
+                poll.name,
                 style = typography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
 
             Spacer(modifier = Modifier.height(10.dp))
 
             Text("Category: ${poll.category}", fontSize = 15.sp, color = Color.Gray)
-            Text("Posted: ${poll.postedDate}", fontSize = 15.sp, color = Color.Gray)
+            Text("Posted: ${poll.createdDate}", fontSize = 15.sp, color = Color.Gray)
             Text("Ends: ${poll.endDate}", fontSize = 15.sp, color = Color.Gray)
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -103,13 +104,16 @@ fun PollDetailsScreen(poll: Poll, navController: NavController) {
 
             Spacer(modifier = Modifier.height(14.dp))
 
+            val totalVotes = poll.votes.values.sum()
+
             poll.options.forEach { option ->
+                val votesForOption = poll.votes[option] ?: 0
                 val percentage =
-                    if (poll.totalVotes == 0) 0f else option.votes.toFloat() / poll.totalVotes
+                    if (totalVotes == 0) 0f else votesForOption.toFloat() / totalVotes
 
                 OptionResultItem(
-                    optionText = option.option,
-                    votes = option.votes,
+                    optionText = option,
+                    votes = votesForOption,
                     percentage = percentage
                 )
 
@@ -135,7 +139,7 @@ fun OptionResultItem(optionText: String, votes: Int, percentage: Float) {
         Spacer(modifier = Modifier.height(6.dp))
 
         LinearProgressIndicator(
-            progress = percentage,
+            progress = { percentage },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)

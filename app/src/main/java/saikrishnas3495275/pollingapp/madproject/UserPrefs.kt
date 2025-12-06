@@ -9,6 +9,7 @@ object UserPrefs {
     private const val KEY_IS_USER_LOGGED_IN = "KEY_IS_USER_LOGGED_IN"
     private const val KEY_NAME = "KEY_NAME"
     private const val KEY_EMAIL = "KEY_EMAIL"
+    private const val KEY_ROLE = "KEY_ROLE"
 
     fun markLoginStatus(context: Context, isLoggedIn: Boolean) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -38,5 +39,15 @@ object UserPrefs {
     fun getEmail(context: Context): String {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         return prefs.getString(KEY_EMAIL, "") ?: ""
+    }
+
+    fun saveRole(context: Context, role: String) {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putString(KEY_ROLE, role).apply()
+    }
+
+    fun getRole(context: Context): String {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(KEY_ROLE, "") ?: ""
     }
 }
