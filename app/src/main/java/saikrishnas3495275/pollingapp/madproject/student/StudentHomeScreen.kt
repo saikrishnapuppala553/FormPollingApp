@@ -1,6 +1,7 @@
 package saikrishnas3495275.pollingapp.madproject.student
 
 import android.content.Context
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -61,6 +62,7 @@ import com.google.firebase.database.Transaction
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import saikrishnas3495275.pollingapp.madproject.LoginActivity
 import saikrishnas3495275.pollingapp.madproject.UserPrefs
 import saikrishnas3495275.pollingapp.madproject.teacher.Poll
 import saikrishnas3495275.pollingapp.madproject.ui.theme.RoyalBlue
@@ -150,7 +152,11 @@ fun StudentHomeScreen() {
                     titleContentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 actions = { // Add actions block for trailing icons
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = {
+                        val intent = Intent(context, ProfileActivity::class.java)
+                        context.startActivity(intent)
+
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Person,
                             contentDescription = "Profile",

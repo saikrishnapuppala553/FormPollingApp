@@ -16,12 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import saikrishnas3495275.pollingapp.madproject.teacher.ProfileScreen
 import saikrishnas3495275.pollingapp.madproject.teacher.CreatePollScreen
 import saikrishnas3495275.pollingapp.madproject.teacher.ManagePollsScreen
 import saikrishnas3495275.pollingapp.madproject.teacher.PollDetailsScreen
@@ -31,6 +33,7 @@ sealed class Screen(val route: String, val icon: ImageVector? = null, val title:
     object CreatePoll : Screen("create_poll", Icons.Default.Add, "Create Poll")
     object ManagePolls : Screen("manage_polls", Icons.Default.List, "Manage Polls")
     object PollDetails : Screen("pollDetails/{pollId}", title = "Poll Details")
+    object Profile : Screen("teacher_profile", title = "Profile")
 }
 
 
@@ -48,6 +51,9 @@ class HomeActivity : ComponentActivity() {
 @Composable
 fun TeacherDashboard() {
     val navController = rememberNavController()
+
+    val context = LocalContext.current
+
     val items = listOf(
         Screen.CreatePoll,
         Screen.ManagePolls,
@@ -76,8 +82,12 @@ fun TeacherDashboard() {
             }
         }
     ) { innerPadding ->
-        NavHost(navController, startDestination = Screen.CreatePoll.route, Modifier.padding(innerPadding)) {
-            composable(Screen.CreatePoll.route) { CreatePollScreen() }
+        NavHost(
+            navController,
+            startDestination = Screen.CreatePoll.route,
+            Modifier.padding(innerPadding)
+        ) {
+            composable(Screen.CreatePoll.route) { CreatePollScreen(navController) }
             composable(Screen.ManagePolls.route) { ManagePollsScreen(navController) }
             composable(Screen.PollDetails.route) { backStackEntry ->
                 val pollId = backStackEntry.arguments?.getString("pollId")
@@ -85,6 +95,19 @@ fun TeacherDashboard() {
                     PollDetailsScreen(pollId = pollId, navController = navController)
                 }
             }
+
+            composable(Screen.Profile.route) {
+                ProfileScreen(
+                    user = UserData(
+                        UserPrefs.getName(context),
+                        UserPrefs.getRole(context),
+                        UserPrefs.getEmail(context),
+                        UserPrefs.getPass(context)
+                    )
+                    ,navController
+                )
+            }
+
         }
     }
 }

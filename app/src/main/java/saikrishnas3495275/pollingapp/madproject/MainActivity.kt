@@ -58,7 +58,7 @@ class MainActivity : ComponentActivity() {
                 gotoHomeActivity(this)
             }
             3->{
-                gotoSignInActivity(this)
+                gotoStudentHomeActivity(this)
             }
             2 -> {
                 gotoSignInActivity(this)

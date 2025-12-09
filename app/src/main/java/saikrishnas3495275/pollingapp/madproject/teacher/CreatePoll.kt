@@ -52,8 +52,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import saikrishnas3495275.pollingapp.madproject.Screen
 import saikrishnas3495275.pollingapp.madproject.UserPrefs
 import saikrishnas3495275.pollingapp.madproject.ui.theme.RoyalBlue
 import saikrishnas3495275.pollingapp.madproject.ui.theme.Yellow
@@ -75,7 +78,7 @@ data class Poll(
 )
 
 @Composable
-fun CreatePollScreen() {
+fun CreatePollScreen(navController: NavController) {
     var pollName by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("Select Category") }
     val options = remember { mutableStateListOf("", "", "", "") }
@@ -114,7 +117,9 @@ fun CreatePollScreen() {
                 textAlign = TextAlign.Center
             )
 
-            IconButton(onClick = { }) {
+            IconButton(onClick = {
+                navController.navigate(Screen.Profile.route)
+            }) {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = "Profile",
@@ -413,6 +418,6 @@ fun IconTriggeredDatePicker(selectedDate: LocalDate?, onDateSelected: (LocalDate
 @Composable
 fun CreatePollScreenPreview() {
     MaterialTheme {
-        CreatePollScreen()
+        CreatePollScreen(navController = NavHostController(LocalContext.current))
     }
 }

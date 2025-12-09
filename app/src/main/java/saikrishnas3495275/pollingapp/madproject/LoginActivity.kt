@@ -201,6 +201,7 @@ fun GoInScreen() {
                                                 UserPrefs.saveEmail(context, email = email)
                                                 UserPrefs.saveName(context, it.name)
                                                 UserPrefs.saveRole(context, it.role)
+                                                UserPrefs.savePass(context,it.password)
 
                                                 Toast.makeText(
                                                     context,
